@@ -859,6 +859,24 @@ int main(int argc, char **argv)
             ConfigManager::Instance()->getConfig<std::string>("vineyard", "glpk", "LPdataFile"))
         ->check(CLI::ExistingFile);
 
+    vineyard_exp
+        ->add_option_function<int>("--lptimelimit",
+                              [](const int val) {
+                                  ConfigManager::Instance()->setConfig(val, "vineyard", "glpk", "lptimelimit");
+                              })
+        ->description("Time limit (in seconds) for each LP instance (0=unlimited)")
+        ->default_val(ConfigManager::Instance()->getConfig<int>("vineyard", "glpk", "lptimelimit"))
+        ->check(CLI::PositiveNumber);
+
+    vineyard_exp
+        ->add_option_function<std::string>("--lpalgorithm",
+                      [](const std::string &algo) {
+                            ConfigManager::Instance()->setConfig(algo, "vineyard", "glpk", "lpalgorithm");
+                      })
+        ->description("LP solution algorithm ")
+        ->default_val(ConfigManager::Instance()->getConfig<std::string>("vineyard", "glpk", "lpalgorithm"))
+        ->check(CLI::IsMember({"simplex", "interior"}));
+
     experiment
         ->add_option_function<std::string>("-o,--mcf-model",
                                            [](const std::string &path) {
