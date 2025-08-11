@@ -304,7 +304,16 @@ namespace vineyard
             if ( tm_lim != 0 ) {
                 param.tm_lim = tm_lim * 1000;
             }
-            glp_simplex(this->lp_problem, &param);
+            int ret = glp_simplex(this->lp_problem, &param);
+            switch (ret) {
+                case GLP_ETMLIM:
+                    BOOST_LOG_TRIVIAL(warning) << "SIMPLEX Method exceeded time limit!";
+                    break;
+                case 0:
+                    break;
+                default:
+                    BOOST_LOG_TRIVIAL(warning) << "SIMPLEX Method returned error code " << ret;
+            };
         } else if ( algo == "interior" ) {
             glp_interior(this->lp_problem, NULL);
         } else {

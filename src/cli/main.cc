@@ -219,7 +219,10 @@ int main(int argc, char **argv)
     CLI::App app{"VNE-SIM: A Virtual Network Embedding Simulator", "vnesim"};
 
     // Set callback to lock the configs after parsing of the arguments is finished
-    app.parse_complete_callback([]() { ConfigManager::Instance()->lockConfigs(); });
+    app.parse_complete_callback([]() {
+        ConfigManager::Instance()->lockConfigs();
+        Logger::Instance();
+    });
 
     // Enable help all flag to show all subcommands
     app.set_help_all_flag("--help-all", "Expand all help");
