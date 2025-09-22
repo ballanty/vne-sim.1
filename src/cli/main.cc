@@ -859,8 +859,7 @@ int main(int argc, char **argv)
                                            })
         ->description("GLPK LP data file")
         ->default_val(
-            ConfigManager::Instance()->getConfig<std::string>("vineyard", "glpk", "LPdataFile"))
-        ->check(CLI::ExistingFile);
+            ConfigManager::Instance()->getConfig<std::string>("vineyard", "glpk", "LPdataFile"));
 
     vineyard_exp
         ->add_option_function<int>("--lptimelimit",
